@@ -1,3 +1,6 @@
+// amount represents the number of stroies we want to send to the front end
+const amount = 7;
+
 const specificNews = (req, res, fs) => {
     fs.readFile('./data/news/ndtv.json', (err, data) => {
         if (err) {
@@ -5,7 +8,7 @@ const specificNews = (req, res, fs) => {
           return;
         }
     
-        res.json(JSON.parse(data.toString()))
+        res.json(JSON.parse(data.toString()).slice(0, amount))
       })
     
 }
@@ -17,7 +20,7 @@ const allNews = (req, res, fs) => {
           return;
         }
     
-        res.json(JSON.parse(data.toString()))
+        res.json(JSON.parse(data.toString()).slice(0, amount))
       })
 }
 

@@ -1,7 +1,8 @@
 import express, {json, urlencoded} from 'express';
 import fetch from 'node-fetch';
 import fs from 'fs';
-import news from './controllers/news.js'
+import cors from 'cors';
+import news from './controllers/news.js';
 
 const url = 'https://top-nft-collections-and-sales.p.rapidapi.com/sales/1d';
 
@@ -17,6 +18,7 @@ const options = {
 const app = express();
 app.use(json());
 app.use(urlencoded({extended:false}));
+app.use(cors());
 
 
 app.get('/', (req, res) => {
