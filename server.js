@@ -41,7 +41,6 @@ app.post('/signin', (req, res) => {
       return res.status(400).json("incorrect credentials")
     }
     return res.status(200).json("success")
-    // res.json(user)
 })
 
 // NEWS end-points
