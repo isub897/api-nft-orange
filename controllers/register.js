@@ -1,11 +1,11 @@
 const handleRegister = async (req, res, postgres, bcrypt, findUser) => {
     const {username, email, password} = req.body;
-    const foundUser = await findUser(req.body.email);
+    const foundUser = await findUser(email);
 
-    if (foundUser) return res.status(200).json(false)
+    if (foundUser) return res.status(200).json("taken")
         
     const salt = bcrypt.genSaltSync(10);
-    const hash = bcrypt.hashSync(req.body.password, salt);
+    const hash = bcrypt.hashSync(password, salt);
 
     try {
         await postgres.transaction(async (trx) => {

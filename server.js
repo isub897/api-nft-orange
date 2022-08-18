@@ -26,20 +26,6 @@ const postgres = knex({
   }
 })
 
-// const myfunction = async () => {
-//   const response = await postgres('users').where('mail', 'isub@gmail.com');
-//   console.log(response)
-// }
-// myfunction();
-
-
-app.get('/', (req, res) => {
-    res.json({msg: "you made it"})
-})
-
-//SIGN IN
-app.post('/signin', (req, res) => {handleSignin(req, res, users)})
-
 const findUser = async (input) => {
   try {
       const response = await postgres('users').where('email', input)
@@ -49,6 +35,13 @@ const findUser = async (input) => {
     }
 }
 
+app.get('/', (req, res) => {
+    res.json({msg: "you made it"})
+})
+
+//SIGN IN
+app.post('/signin', (req, res) => {handleSignin(req, res, postgres, bcrypt, findUser)})
+
 //REGISTER
 app.post('/register', (req, res) => {handleRegister(req, res, postgres, bcrypt, findUser)})
 
@@ -56,6 +49,7 @@ app.post('/register', (req, res) => {handleRegister(req, res, postgres, bcrypt, 
 app.get('/ndtv', (req, res) => {news.specificNews(req, res, fs)})
 app.get('/news', (req, res) => {news.allNews(req, res, fs)})
 
+// Stats
 app.get('/:time', (req, res) => handleStats(req, res, fs));
 
 app.listen(3000);
@@ -78,16 +72,3 @@ app.listen(3000);
 //     password: "test2"
 //   }
 // ]
-
-// const insertLogin = await postgres('login').insert({
-//   email: email,
-//   hash: hash
-// })
-// const insertUser = await postgres('users').insert({
-//   username: username,
-//   email: email,
-//   joined: new Date(),
-//   logins: 0 
-// })
-// console.log(insertLogin)
-// console.log(insertUser)
