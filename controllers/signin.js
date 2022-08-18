@@ -1,11 +1,10 @@
-const handleSignin = (req, res, users) => {
-    const user = users.find((data) => {
-        return data.email === req.body.email;
-    })
-    if (!user || user.password != req.body.password) {
-        return res.status(400).json("incorrect credentials")
-    }
-    return res.status(200).json("success")
+const handleSignin = async (req, res, postgres, bcrypt, findUser) => {
+    const {email, password} = req.body;
+    const foundUser = await findUser(email);
+    if (!foundUser) return res.status(200).json(false);
+    const hash = await postgres('login').where({email: email}).select('hash');
+    const result = bcrypt.compareSync(password, hash[0].hash);
+    return res.status(200).json(result)
 }
 
 export default handleSignin;
