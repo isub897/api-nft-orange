@@ -4,7 +4,10 @@ const handleSignin = async (req, res, postgres, bcrypt, findUser) => {
     if (!foundUser) return res.status(200).json(false);
     const hash = await postgres('login').where({email: email}).select('hash');
     const result = bcrypt.compareSync(password, hash[0].hash);
-    return res.status(200).json(result)
+    if (!result) return res.status(200).json(result)
+    const user = await postgres('users').where('email', email);
+    // console.log(user)
+    return res.status(200).json(user[0]);
 }
 
 export default handleSignin;

@@ -9,8 +9,11 @@ import handleRegister from './controllers/register.js';
 import knex from 'knex';
 import bcrypt from 'bcryptjs';
 
+
+
 const app = express();
 
+app.use(express.static('public'));
 app.use(json());
 app.use(urlencoded({extended:false}));
 app.use(cors());
@@ -34,6 +37,11 @@ const findUser = async (input) => {
       return false;
     }
 }
+
+app.get('/dashboard', (req, res) => {
+
+  return res.status(200).json({img: "sdfs"})
+});
 
 app.get('/', (req, res) => {
     res.json({msg: "you made it"})
