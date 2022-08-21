@@ -1,4 +1,4 @@
-const handleRegister = async (req, res, postgres, bcrypt, findUser) => {
+const handleRegister = async (req, res, postgres, bcrypt, findUser, session) => {
     const {username, email, password} = req.body;
     const foundUser = await findUser(email);
 
@@ -23,6 +23,8 @@ const handleRegister = async (req, res, postgres, bcrypt, findUser) => {
                 logins: 0
                 }); 
                 const trxResult = await trx.commit;
+                req.session.authenticated = true;
+                req.session.user = email;
                 return res.status(200).json({
                     username: username,
                     email: email,
